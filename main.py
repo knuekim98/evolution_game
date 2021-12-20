@@ -1,5 +1,5 @@
-from const import result, GAME_COUNT
-from tactics import Tft, Ttft, AlwaysCoop, AlwaysDefect, Random, Downing
+from const import log, result, GAME_COUNT
+from tactics import Tft, Tftt, AlwaysCoop, AlwaysDefect, Random, Downing2, Grudger, Joss, Tester
 
 # True: coop, False: defect
 def game(p1, p2):
@@ -14,7 +14,7 @@ def game(p1, p2):
 
 
 if __name__ == "__main__":
-    t = [Tft(), Ttft(), AlwaysCoop(), AlwaysDefect(), Random(), Downing()]
+    t = [Tft(), Tftt(), AlwaysDefect(), Random(), Downing2(), Grudger(), Joss(), Tester()]
     s = [0] * len(t)
 
     for i in range(len(t)):
@@ -33,5 +33,7 @@ if __name__ == "__main__":
     print("----------result----------")
     k = []
     for i in range(len(t)):
-        k.append(t[i].__class__.__name__ + ":" + str(s[i]/len(t)))
-    print(", ".join(k))
+        k.append((t[i].__class__.__name__, s[i]))
+    
+    print(sorted(k, key = lambda x: (-x[1], x[0])))
+    
