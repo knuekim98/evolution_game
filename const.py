@@ -1,6 +1,7 @@
 from enum import Enum
 
 GAME_COUNT = 200
+FIELD_SIZE = 1000
 
 class log(Enum):
     SET = 0
