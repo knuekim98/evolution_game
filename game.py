@@ -1,5 +1,5 @@
 from const import result
-from tactics import Tft, Tftt, AlwaysCoop, AlwaysDefect, Random, Downing2, Grudger, Joss, Tester
+from tactics import Tft, Tftt, AlwaysCoop, AlwaysDefect, Random, Downing, Downing2, Grudger, Joss, Tester
 
 # True: coop, False: defect
 def game(p1, p2):
@@ -18,7 +18,8 @@ TACTIC_LIST = {
     'Tftt': Tftt(), 
     'All-C' : AlwaysCoop(), 
     'All-D' : AlwaysDefect(), 
-    'Randon' : Random(), 
+    'Random' : Random(), 
+    'Downing': Downing(),
     'Downing2': Downing2(), 
     'Grudger': Grudger(), 
     'Joss': Joss(), 
