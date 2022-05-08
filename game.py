@@ -13,6 +13,15 @@ def game(p1, p2):
     return result.DRAW, result.DRAW
 
 
+def game_process(p1, p2, n):
+    for _ in range(n):
+        r1, r2 = game(p1.run(), p2.run())
+        p1.next(r1)
+        p2.next(r2)
+
+    return p1.end(), p2.end()
+
+
 TACTIC_LIST = {
     'Tft': Tft(), 
     'Tftt': Tftt(), 

@@ -1,9 +1,13 @@
 from const import FIELD_SIZE, D
-from game import game, TACTIC_LIST
+from game import TACTIC_LIST, game_process
+from random import randint
+from copy import deepcopy
+from graph import get_scatter
 
 
-field = [[0] for _ in range(FIELD_SIZE)]*FIELD_SIZE
+field = [[False]*FIELD_SIZE for _ in range(FIELD_SIZE)]
 a = []
+new_a = []
 
 
 def get_distance(a1, a2):
@@ -33,16 +37,56 @@ def get_pair(s, e):
     return hubo
 
 
+def get_baby(ai, n):
+    for _ in range(n):
+        field[ai[0]][ai[1]] = False
+        x = y = -1
+        r = 5
+        k = 0
+        while x==-1 or field[x][y]:
+            x = randint(ai[0]-r, ai[0]+r)
+            if x<0: x=0
+            elif x>=FIELD_SIZE: x=FIELD_SIZE-1
+            y = randint(ai[1]-r, ai[1]+r)
+            if y<0: y=0
+            elif y>=FIELD_SIZE: y=FIELD_SIZE-1
+            k += 1
+            if k > r**2:
+                r += 2
+                k = 0
+        field[x][y] = True
+        new_a.append([x, y, ai[2], len(new_a)])
+
+
 if __name__ == "__main__":
     # init
-    a.append([250, 250, 'Tft'])
-    a.append([250, 251, 'All-D'])
-    a.append([253, 250, 'Downing'])
-    a.append([255, 251, 'Random'])
-
-    x = get_pair(0, len(a)-1)
-    p = []
-    for i in x:
-        if i not in p: p.append(i)
-
-    print(p)
+    a.append([20, 20, 'All-C', 0])
+    a.append([40, 40, 'Downing', 1])
+    a.append([20, 40, 'Joss', 2])
+    a.append([40, 20, 'Random', 3])
+    for i in a: field[i[0]][i[1]] = True
+    
+    # iterate
+    for _ in range(5):
+        s = [[0, i] for i in range(len(a))]
+        h = get_pair(0, len(a)-1)
+        p = []
+        for i in h:
+            if i not in p: 
+                p.append(i)
+                x, y = game_process(TACTIC_LIST[i[0][2]], TACTIC_LIST[i[1][2]], 30)
+                s[i[0][3]][0] += x
+                s[i[1][3]][0] += y
+        
+        s.sort()
+        l = len(s)
+        n = round((500/l)**0.5)
+        for i in range(l):
+            if s[i][0] < s[l//3][0]: get_baby(a[s[i][1]], n-1)
+            elif s[i][0] < s[l//3*2][0]: get_baby(a[s[i][1]], n)
+            else: get_baby(a[s[i][1]], n+1)
+        
+        a = deepcopy(new_a)
+        new_a.clear()
+        
+        get_scatter(a)

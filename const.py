@@ -1,8 +1,8 @@
 from enum import Enum
 
 GAME_COUNT = 200
-FIELD_SIZE = 1000
-D = 18
+FIELD_SIZE = 100
+D = 50
 
 class log(Enum):
     SET = 0
@@ -10,7 +10,7 @@ class log(Enum):
     RESULT = 2
 
 class result(Enum):
-    COOP = 3
-    DEFECT = 5
-    DEFECTED = 0
-    DRAW = 1
+    COOP = 1
+    DEFECT = 3
+    DEFECTED = -3
+    DRAW = -1
