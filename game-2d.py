@@ -1,4 +1,5 @@
-from const import FIELD_SIZE, D
+from math import ceil
+from const import FIELD_SIZE, D, PLAYER_N
 from game import TACTIC_LIST, game_process
 from random import randint
 from copy import deepcopy
@@ -60,10 +61,10 @@ def get_baby(ai, n):
 
 if __name__ == "__main__":
     # init
-    a.append([20, 20, 'All-C', 0])
+    a.append([20, 20, 'Random', 0])
     a.append([40, 40, 'Downing', 1])
-    a.append([20, 40, 'Joss', 2])
-    a.append([40, 20, 'Random', 3])
+    a.append([20, 40, 'Grudger', 2])
+    a.append([40, 20, 'Joss', 3])
     for i in a: field[i[0]][i[1]] = True
     
     # iterate
@@ -74,16 +75,16 @@ if __name__ == "__main__":
         for i in h:
             if i not in p: 
                 p.append(i)
-                x, y = game_process(TACTIC_LIST[i[0][2]], TACTIC_LIST[i[1][2]], 30)
+                x, y = game_process(TACTIC_LIST[i[0][2]], TACTIC_LIST[i[1][2]], randint(10, 30))
                 s[i[0][3]][0] += x
                 s[i[1][3]][0] += y
         
         s.sort()
         l = len(s)
-        n = round((500/l)**0.5)
+        n = max(round((PLAYER_N/l)**0.5), 2)
         for i in range(l):
             if s[i][0] < s[l//3][0]: get_baby(a[s[i][1]], n-1)
-            elif s[i][0] < s[l//3*2][0]: get_baby(a[s[i][1]], n)
+            elif s[i][0] <= s[l//3*2][0]: get_baby(a[s[i][1]], n)
             else: get_baby(a[s[i][1]], n+1)
         
         a = deepcopy(new_a)
